@@ -155,7 +155,7 @@ selVolt.setOutputValue(WG_SPM15.OutputValue.MEAS_GEN_LEVEL_FREQ)
 print(selVolt.measure())
 selVolt.local()
 ```
-## Result of executing the above code (Not done yet):
+## Result of executing the above code:
 ```
 W&G SPM15 address: 2
 -27.45
