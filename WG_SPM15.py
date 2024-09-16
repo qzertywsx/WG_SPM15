@@ -7,7 +7,7 @@ class WG_SPM15(object):
 		self.address = addr
 		self.gpib = gpib
 		self.firstTime = True
-		self.preCommand()
+		self._preCommand()
 		gpib.query("++read eoi")
 		gpib.write("++spoll")
 	
@@ -72,12 +72,20 @@ class WG_SPM15(object):
 	def __str__(self):
 		return "W&G SPM15 address: " + str(self.address)
 	
-	def preCommand(self):
+	def _preCommand(self):
+		"""Command to be executed before every other command"""
 		if self.gpib.address != self.address or self.firstTime:
 			self.firstTime = False
 			self.gpib.set_address(self.address)
+			#self.gpib.write("++eor 2")
 	
-	def waitBusyFlag(self):
+	def reset(self):
+		"""Reset the instrument to the default state"""
+		self._preCommand()
+		gpib.query("++clr")
+	
+	def _waitBusyFlag(self):
+		"""Write message to GPIB bus and read results."""
 		while True:
 			self.gpib.write('++spoll')																									#Request the status from the instrument
 			try:
@@ -95,27 +103,29 @@ class WG_SPM15(object):
 				break																																			#	Escape the loop
 			time.sleep(0.1)
 	
-	def reset(self):
-		self.preCommand()
-		gpib.query("++clr")
-	
 	def setFrequency(self, freq):
-		self.preCommand()
+		"""Set the frequancy of the instrument"""
+		self._preCommand()
 		if freq < 10e6:
 			self.gpib.write("F{:0>8},".format(freq))
 	
 	def setAmplitude(self, val):
-		self.preCommand()
+		"""Set the generator amplitude"""
+		self._preCommand()
 		if val >= -50.9 and val <= 10.03:
 			self.gpib.write("L{:+06.1f},".format(val))
 	
 	def measure(self):
-		self.preCommand()
+		"""Take a measurement"""
+		self._preCommand()
+		#self.gpib.write("\n")
 		self.gpib.read()
 		self.gpib.write("++trg")
-		self.waitBusyFlag()
+		self._waitBusyFlag()
+		#time.sleep(10)
 		try:
 			tmp = self.gpib.query("++read eoi")
+			#print("tmp:", tmp)
 			if "," not in tmp:
 				return float(re.sub("[ a-zA-Z]", "", tmp))
 			else:
@@ -130,7 +140,8 @@ class WG_SPM15(object):
 			return False
 	
 	def setBandwidth(self, bw):
-		self.preCommand()
+		"""Set the bandwidth of the receiver"""
+		self._preCommand()
 		if bw == self.Bandwidth.WIDEBAND:
 			self.gpib.write('B0,')
 		elif bw == self.Bandwidth.B25:
@@ -147,7 +158,8 @@ class WG_SPM15(object):
 			raise Exception("Selected bandwidth don't exist")
 	
 	def setOutputImpedance(self, z):
-		self.preCommand()
+		"""Set the output (generator) impedance"""
+		self._preCommand()
 		if z == self.OutputImpedance.COAX75:
 			self.gpib.write('P0,')
 		elif z == self.OutputImpedance.BAL124:
@@ -162,7 +174,8 @@ class WG_SPM15(object):
 			raise Exception("Selected output Impedance don't exist")
 	
 	def setInputImpedance(self, z):
-		self.preCommand()
+		"""Set the input (receiver) impedance"""
+		self._preCommand()
 		if z == self.InputImpedance.COAX75:
 			self.gpib.write('Q01,')
 		elif z == self.InputImpedance.COAX75_INF:
@@ -183,14 +196,16 @@ class WG_SPM15(object):
 			raise Exception("Selected input Impedance don't exist")
 	
 	def enableGenerator(self, on):
-		self.preCommand()
+		"""Switch the genarator on or off"""
+		self._preCommand()
 		if on:
 			self.gpib.write("G0210,")
 		else:
 			self.gpib.write("G1210,")
 	
 	def setCalibration(self, cal):
-		self.preCommand()
+		"""Set the auto calibration mode"""
+		self._preCommand()
 		if cal == self.Calibration.OFF:
 			self.gpib.write('C0,')
 		elif cal == self.Calibration.ON:
@@ -201,7 +216,8 @@ class WG_SPM15(object):
 			raise Exception("Selected calibration don't exist")
 	
 	def setOutputValue(self, ov):
-		self.preCommand()
+		"""Choose the output (measurement) value"""
+		self._preCommand()
 		if ov == self.OutputValue.MEAS_LEVEL:
 			self.gpib.write('D11,')
 		elif ov == self.OutputValue.GEN_LEVEL:
@@ -222,7 +238,8 @@ class WG_SPM15(object):
 			raise Exception("Selected output value don't exist")
 	
 	def setTriggerMode(self, t):
-		self.preCommand()
+		"""Set the trigger mode"""
+		self._preCommand()
 		if t == self.TriggerMode.CONTINUOUS:
 			self.gpib.write('T0,')
 		elif t == self.TriggerMode.SINGLE:
@@ -231,7 +248,8 @@ class WG_SPM15(object):
 			raise Exception("Selected trigger mode don't exist")
 	
 	def setLevelMeasurement(self, levDisp, measType):
-		self.preCommand()
+		"""Set the level display and measurement type"""
+		self._preCommand()
 		command = "R"
 		if levDisp == self.LevelDisplay.ABS:
 			command += "0"
@@ -261,5 +279,6 @@ class WG_SPM15(object):
 		self.gpib.write(command+',')
 		
 	def local(self):
-		self.preCommand()
+		"""Go to local mode (Reenable the front panel control)"""
+		self._preCommand()
 		self.gpib.local()
