@@ -138,23 +138,26 @@ from GPIB_WIFI import AR488_WIFI
 from WG_SPM15 import WG_SPM15
 
 gpib = AR488_WIFI('192.168.178.36', timeout=5)
-vsel = WG_SPM15(gpib, 2)
-vsel.setLevelMeasurement(WG_SPM15.LevelDisplay.ABS, WG_SPM15.MeasurementType.DIGITAL_AUTORANGE)
-vsel.setCalibration(WG_SPM15.Calibration.OFF)
-vsel.setTriggerMode(WG_SPM15.TriggerMode.CONTINUOUS)#SINGLE)
-vsel.setBandwidth(WG_SPM15.Bandwidth.B25)
-vsel.setOutputImpedance(WG_SPM15.OutputImpedance.COAX75)
-vsel.setInputImpedance(WG_SPM15.InputImpedance.COAX75)
-vsel.enableGenerator(True)
-vsel.setOutputValue(WG_SPM15.OutputValue.MEAS_LEVEL)
-vsel.setAmplitude(-27.5)
-vsel.setFrequency(17200)
-print(vsel.measure())
-vsel.setOutputValue(WG_SPM15.OutputValue.MEAS_GEN_LEVEL_FREQ)
-print(vsel.measure())
-vsel.local()
+selVolt = WG_SPM15(gpib, 2)
+print(selVolt)
+selVolt.setLevelMeasurement(WG_SPM15.LevelDisplay.ABS, WG_SPM15.MeasurementType.DIGITAL_AUTORANGE)
+selVolt.setCalibration(WG_SPM15.Calibration.OFF)
+selVolt.setTriggerMode(WG_SPM15.TriggerMode.CONTINUOUS)#SINGLE)
+selVolt.setBandwidth(WG_SPM15.Bandwidth.B25)
+selVolt.setOutputImpedance(WG_SPM15.OutputImpedance.COAX75)
+selVolt.setInputImpedance(WG_SPM15.InputImpedance.COAX75)
+selVolt.enableGenerator(True)
+selVolt.setOutputValue(WG_SPM15.OutputValue.MEAS_LEVEL)
+selVolt.setAmplitude(-27.5)
+selVolt.setFrequency(17200)
+print(selVolt.measure())
+selVolt.setOutputValue(WG_SPM15.OutputValue.MEAS_GEN_LEVEL_FREQ)
+print(selVolt.measure())
+selVolt.local()
 ```
 ## Result of executing the above code (Not done yet):
 ```
-GPIB address: 2, IP: 192.168.178.36
+W&G SPM15 address: 2
+-27.45
+[-27.45, -27.5, 17200]
 ```
