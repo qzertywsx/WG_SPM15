@@ -4,24 +4,24 @@ Python module for the Wandel &amp; Goltermann SPM-15 selective voltmeter.
 You must use my GPIB or GPIB_WIFI module to use this module.
 
 ## Supported command:
-### waitBusyFlag()
+### `waitBusyFlag()`
 Wait untile end of measurement
 
-### reset()
+### `reset()`
 Reset the instrument to the default state
 
-### setFrequency(freq)
+### `setFrequency(freq)`
 Set the frequancy of the instrument
 
-### setAmplitude(val)
+### `setAmplitude(val)`
 Set the generator amplitude
 
-### measure()
+### `measure()`
 Take a measurement
 
 Return the measurement as real value, a list if more than one value or `False` in case of problem
 
-### setBandwidth(bw)
+### `setBandwidth(bw)`
 Set the bandwidth of the receiver
 <table>
   <tr><td>bw</td><td>Description</td></tr>
@@ -34,7 +34,7 @@ Set the bandwidth of the receiver
 </table>
 The default instrument mode is WG_SPM15.Bandwidth.B3100
 
-### setOutputImpedance(z)
+### `setOutputImpedance(z)`
 Set the output (generator) impedance
 <table>
   <tr><td>z</td><td>Description</td></tr>
@@ -46,7 +46,7 @@ Set the output (generator) impedance
 </table>
 The default instrument mode is WG_SPM15.OutputImpedance.COAX75
 
-### setInputImpedance(z)
+### `setInputImpedance(z)`
 Set the input (receiver) impedance
 <table>
   <tr><td>z</td><td>Description</td></tr>
@@ -61,7 +61,7 @@ Set the input (receiver) impedance
 </table>
 The default instrument mode is WG_SPM15.InputImpedance.COAX75
 
-### enableGenerator(on)
+### `enableGenerator(on)`
 Switch the genarator on or off
 <table>
   <tr><td>on</td><td>Description</td></tr>
@@ -70,7 +70,7 @@ Switch the genarator on or off
 </table>
 The default instrument mode is False (Generator OFF)
 
-### setCalibration(cal)
+### `setCalibration(cal)`
 Set the auto calibration mode
 <table>
   <tr><td>cal</td><td>Description</td></tr>
@@ -80,7 +80,7 @@ Set the auto calibration mode
 </table>
 The default instrument mode is WG_SPM15.Calibration.ON
 
-### setOutputValue(ov)
+### `setOutputValue(ov)`
 Choose the output (measurement) value
 <table>
   <tr><td>ov</td><td>Description</td></tr>
@@ -95,7 +95,7 @@ Choose the output (measurement) value
 </table>
 The default instrument mode is WG_SPM15.OutputValue.MEAS_LEVEL
 
-### setTriggerMode(t)
+### `setTriggerMode(t)`
 Set the trigger mode
 <table>
   <tr><td>t</td><td>Description</td></tr>
@@ -104,7 +104,7 @@ Set the trigger mode
 </table>
 The default instrument mode is WG_SPM15.TriggerMode.CONTINUOUS
 
-### setLevelMeasurement(levDisp, measType)
+### `setLevelMeasurement(levDisp, measType)`
 Set the level display and measurement type
 
 <table>
@@ -129,7 +129,7 @@ The default instrument mode is WG_SPM15.LevelDisplay.ABS
 
 The default instrument mode is WG_SPM15.MeasurementType.ANALOG_20
 
-### local()
+### `local()`
 Go to local mode (Reenable the front panel control)
 
 ## Usage:
