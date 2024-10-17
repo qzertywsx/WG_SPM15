@@ -4,7 +4,7 @@ Python module for the Wandel &amp; Goltermann SPM-15 selective voltmeter.
 You must use my GPIB or GPIB_WIFI module to use this module.
 
 ## Supported command:
-### _wait_busy_flag()
+### `_wait_busy_flag()`
 Wait untile end of measurement
 
 ### `reset()`
