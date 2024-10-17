@@ -1,19 +1,19 @@
-# WG_SPM15
+# wg_spm15
 Python module for the Wandel &amp; Goltermann SPM-15 selective voltmeter.
 
 You must use my GPIB or GPIB_WIFI module to use this module.
 
 ## Supported command:
-### `waitBusyFlag()`
+### _wait_busy_flag()
 Wait untile end of measurement
 
 ### `reset()`
 Reset the instrument to the default state
 
-### `setFrequency(freq)`
+### `set_frequency(freq)`
 Set the frequancy of the instrument
 
-### `setAmplitude(val)`
+### `set_amplitude(val)`
 Set the generator amplitude
 
 ### `measure()`
@@ -21,7 +21,7 @@ Take a measurement
 
 Return the measurement as real value, a list if more than one value or `False` in case of problem
 
-### `setBandwidth(bw)`
+### `set_bandwidth(bw)`
 Set the bandwidth of the receiver
 <table>
   <tr><td>bw</td><td>Description</td></tr>
@@ -34,7 +34,7 @@ Set the bandwidth of the receiver
 </table>
 The default instrument mode is WG_SPM15.Bandwidth.B3100
 
-### `setOutputImpedance(z)`
+### `set_output_impedance(z)`
 Set the output (generator) impedance
 <table>
   <tr><td>z</td><td>Description</td></tr>
@@ -46,7 +46,7 @@ Set the output (generator) impedance
 </table>
 The default instrument mode is WG_SPM15.OutputImpedance.COAX75
 
-### `setInputImpedance(z)`
+### `set_input_impedance(z)`
 Set the input (receiver) impedance
 <table>
   <tr><td>z</td><td>Description</td></tr>
@@ -61,7 +61,7 @@ Set the input (receiver) impedance
 </table>
 The default instrument mode is WG_SPM15.InputImpedance.COAX75
 
-### `enableGenerator(on)`
+### `enable_generator(on)`
 Switch the genarator on or off
 <table>
   <tr><td>on</td><td>Description</td></tr>
@@ -70,7 +70,7 @@ Switch the genarator on or off
 </table>
 The default instrument mode is False (Generator OFF)
 
-### `setCalibration(cal)`
+### `set_calibration(cal)`
 Set the auto calibration mode
 <table>
   <tr><td>cal</td><td>Description</td></tr>
@@ -80,7 +80,7 @@ Set the auto calibration mode
 </table>
 The default instrument mode is WG_SPM15.Calibration.ON
 
-### `setOutputValue(ov)`
+### `set_output_value(ov)`
 Choose the output (measurement) value
 <table>
   <tr><td>ov</td><td>Description</td></tr>
@@ -95,7 +95,7 @@ Choose the output (measurement) value
 </table>
 The default instrument mode is WG_SPM15.OutputValue.MEAS_LEVEL
 
-### `setTriggerMode(t)`
+### `set_trigger_mode(t)`
 Set the trigger mode
 <table>
   <tr><td>t</td><td>Description</td></tr>
@@ -104,7 +104,7 @@ Set the trigger mode
 </table>
 The default instrument mode is WG_SPM15.TriggerMode.CONTINUOUS
 
-### `setLevelMeasurement(levDisp, measType)`
+### `set_level_measurement(lev_disp, meas_type)`
 Set the level display and measurement type
 
 <table>
@@ -134,30 +134,29 @@ Go to local mode (Reenable the front panel control)
 
 ## Usage:
 ```python
-from GPIB_WIFI import AR488_WIFI
-from WG_SPM15 import WG_SPM15
+from gpib_all import AR488Wifi
+from wg_spm15 import WGSPM15
 
-gpib = AR488_WIFI('192.168.178.36', timeout=5)
-selVolt = WG_SPM15(gpib, 2)
+gpib = AR488Wifi('192.168.178.36')
 print(selVolt)
-selVolt.setLevelMeasurement(WG_SPM15.LevelDisplay.ABS, WG_SPM15.MeasurementType.DIGITAL_AUTORANGE)
-selVolt.setCalibration(WG_SPM15.Calibration.OFF)
-selVolt.setTriggerMode(WG_SPM15.TriggerMode.CONTINUOUS)#SINGLE)
-selVolt.setBandwidth(WG_SPM15.Bandwidth.B25)
-selVolt.setOutputImpedance(WG_SPM15.OutputImpedance.COAX75)
-selVolt.setInputImpedance(WG_SPM15.InputImpedance.COAX75)
-selVolt.enableGenerator(True)
-selVolt.setOutputValue(WG_SPM15.OutputValue.MEAS_LEVEL)
-selVolt.setAmplitude(-27.5)
-selVolt.setFrequency(17200)
-print(selVolt.measure())
-selVolt.setOutputValue(WG_SPM15.OutputValue.MEAS_GEN_LEVEL_FREQ)
+selVolt.set_level_measurement(WGSPM15.LevelDisplay.ABS, WGSPM15.MeasurementType.DIGITAL_AUTORANGE)
+selVolt.set_calibration(WGSPM15.Calibration.OFF)
+selVolt.set_trigger_mode(WGSPM15.TriggerMode.SINGLE)
+selVolt.set_bandwidth(WGSPM15.Bandwidth.B25)
+selVolt.set_output_impedance(WGSPM15.OutputImpedance.COAX75)
+selVolt.set_input_impedance(WGSPM15.InputImpedance.COAX75)
+selVolt.enable_generator(True)
+selVolt.set_output_value(WGSPM15.OutputValue.MEAS_LEVEL)
+selVolt.set_amplitude(-27.5)
+selVolt.set_frequency(17200)
+print(selVolt.measure(), "dBm")
+selVolt.set_output_value(WGSPM15.OutputValue.MEAS_GEN_LEVEL_FREQ)
 print(selVolt.measure())
 selVolt.local()
 ```
 ## Result of executing the above code:
 ```
 W&G SPM15 address: 2
--27.45
+-27.45 dBm
 [-27.45, -27.5, 17200]
 ```
